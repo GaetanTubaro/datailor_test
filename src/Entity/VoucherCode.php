@@ -18,10 +18,10 @@ class VoucherCode
     #[ORM\Column(type: 'string', length: 20)]
     private $name;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $birthLimit;
 
-    #[ORM\Column(type: 'string', length: 50)]
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $cityLimit;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
