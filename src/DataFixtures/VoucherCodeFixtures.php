@@ -6,6 +6,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use DateTime;
 use App\Entity\VoucherCode;
+use DateInterval;
 
 class VoucherCodeFixtures extends Fixture
 {
@@ -19,7 +20,7 @@ class VoucherCodeFixtures extends Fixture
 
         $voucher2 = new VoucherCode;
         $voucher2->setName('ETUDIANT23')
-            ->setBirthLimit(new DateTime('1999-01-01'))
+            ->setBirthLimit(new DateInterval('P23Y'))
             ->setStartingDate(new DateTime('2022-09-03'))
             ->setEndingDate(new DateTime('2022-01-12'));
         $manager->persist($voucher2);
