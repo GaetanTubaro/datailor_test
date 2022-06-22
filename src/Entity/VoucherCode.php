@@ -18,9 +18,6 @@ class VoucherCode
     #[ORM\Column(type: 'string', length: 20)]
     private $name;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $birthLimit;
-
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $cityLimit;
 
@@ -32,6 +29,9 @@ class VoucherCode
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'voucherCodeUsed')]
     private $users;
+
+    #[ORM\Column(type: 'dateinterval', nullable: true)]
+    private $birthLimit;
 
     public function __construct()
     {
@@ -55,17 +55,7 @@ class VoucherCode
         return $this;
     }
 
-    public function getBirthLimit(): ?\DateTimeInterface
-    {
-        return $this->birthLimit;
-    }
 
-    public function setBirthLimit(\DateTimeInterface $birthLimit): self
-    {
-        $this->birthLimit = $birthLimit;
-
-        return $this;
-    }
 
     public function getCityLimit(): ?string
     {
@@ -126,6 +116,18 @@ class VoucherCode
         if ($this->users->removeElement($user)) {
             $user->removeVoucherCodeUsed($this);
         }
+
+        return $this;
+    }
+
+    public function getBirthLimit(): ?\DateInterval
+    {
+        return $this->birthLimit;
+    }
+
+    public function setBirthLimit(?\DateInterval $birthLimit): self
+    {
+        $this->birthLimit = $birthLimit;
 
         return $this;
     }
