@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VoucherCodeController extends AbstractController
 {
-    #[Route('/voucher/{code}/code/{id}/user', name: 'validate_voucher', methods: 'GET')]
+    #[Route('/voucher/{code}/user/{id}', name: 'validate_voucher', methods: 'GET')]
     public function validateVoucherCode($code, $id, UserRepository $userRepo, VoucherCodeRepository $voucherRepo): Response
     {
         $user = $userRepo->findOneBy(['id' => $id]); // recupération données du user
@@ -39,12 +39,12 @@ class VoucherCodeController extends AbstractController
 
         if ($voucher->getBirthLimit() != null) 
         { // check si $voucher->getBirthLimit() n'est pas nulle
-        
-            /** @var Datetime $buser */
+            
+            /** @var Datetime $birthUser */
             $birthUser = $user->getBirthDate(); 
             $present = new DateTime();
-            $present->sub($voucher->getBirthLimit()); 
-            if ($birthUser < $present)
+            $ageUser = $present->diff($birthUser)->y; ;
+            if ($ageUser < $voucher->getBirthLimit())
             { // check si contrainte respectée
 
                 return $this->json([

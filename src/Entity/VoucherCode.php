@@ -30,7 +30,7 @@ class VoucherCode
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'voucherCodeUsed')]
     private $users;
 
-    #[ORM\Column(type: 'dateinterval', nullable: true)]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $birthLimit;
 
     public function __construct()
@@ -120,15 +120,16 @@ class VoucherCode
         return $this;
     }
 
-    public function getBirthLimit(): ?\DateInterval
+    public function getBirthLimit(): ?int
     {
         return $this->birthLimit;
     }
 
-    public function setBirthLimit(?\DateInterval $birthLimit): self
+    public function setBirthLimit(?int $birthLimit): self
     {
         $this->birthLimit = $birthLimit;
 
         return $this;
     }
+
 }

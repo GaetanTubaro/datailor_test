@@ -20,7 +20,7 @@ class VoucherCodeFixtures extends Fixture
 
         $voucher2 = new VoucherCode;
         $voucher2->setName('ETUDIANT23')
-            ->setBirthLimit(new DateInterval('P23Y'))
+            ->setBirthLimit(23)
             ->setStartingDate(new DateTime('2022-09-03'))
             ->setEndingDate(new DateTime('2022-01-12'));
         $manager->persist($voucher2);
