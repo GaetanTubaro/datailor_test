@@ -27,9 +27,13 @@ class User
     #[ORM\ManyToMany(targetEntity: VoucherCode::class, inversedBy: 'users')]
     private $voucherCodeUsed;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: DeliveryOrder::class)]
+    private $deliveryOrders;
+
     public function __construct()
     {
         $this->voucherCodeUsed = new ArrayCollection();
+        $this->deliveryOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +97,36 @@ class User
     public function removeVoucherCodeUsed(VoucherCode $voucherCodeUsed): self
     {
         $this->voucherCodeUsed->removeElement($voucherCodeUsed);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DeliveryOrder>
+     */
+    public function getDeliveryOrders(): Collection
+    {
+        return $this->deliveryOrders;
+    }
+
+    public function addDeliveryOrder(DeliveryOrder $deliveryOrder): self
+    {
+        if (!$this->deliveryOrders->contains($deliveryOrder)) {
+            $this->deliveryOrders[] = $deliveryOrder;
+            $deliveryOrder->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeliveryOrder(DeliveryOrder $deliveryOrder): self
+    {
+        if ($this->deliveryOrders->removeElement($deliveryOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($deliveryOrder->getUser() === $this) {
+                $deliveryOrder->setUser(null);
+            }
+        }
 
         return $this;
     }
