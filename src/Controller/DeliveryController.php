@@ -21,6 +21,7 @@ class DeliveryController extends AbstractController
         /** @var DeliveryEnquiry $deliveryEnquiry */
         $deliveryEnquiry = $serializer->deserialize($request->getContent(), DeliveryEnquiry::class, 'json');
 
+        /** Verification de la difference entre la date de commande et la de livraison voulue */
         if(!$deliveryEnquiry->timeDiff($deliveryEnquiry->getOrderDate(),$deliveryEnquiry->getDeliveryEnquiry()))
         {
 
@@ -30,8 +31,9 @@ class DeliveryController extends AbstractController
             ], 400);
         }
 
+        /** Verification si la date est déjà en base de données */
         if($deliveryRepo->findOneBy(['deliveryDate' => $deliveryEnquiry->getDeliveryEnquiry()]) !== null)
-        {
+        { 
 
             return new JsonResponse([
                 'error' => 400,
@@ -40,6 +42,7 @@ class DeliveryController extends AbstractController
         }
         ;
 
+        /** Création de l'objet a push en bdd */
         $user = $userRepo->findOneBy(['id'=> $deliveryEnquiry->getUserId()]);
         $deliveryOrder = new DeliveryOrder;
         $deliveryOrder->setDeliveryDate($deliveryEnquiry->getDeliveryEnquiry())
